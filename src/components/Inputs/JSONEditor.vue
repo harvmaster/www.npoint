@@ -326,8 +326,6 @@ const handleKeys = (e: KeyboardEvent) => {
   // Update the lines
   const content = e.target.innerHTML || ''
   json.value = content
-
-  
 }
 
 const saveLines = (e: FocusEvent) => {
