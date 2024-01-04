@@ -10,10 +10,6 @@
 
           <div class="col q-pl-sm">
             <route-input class="full-width" />
-            <!-- <div class="route-input full-width" data-placeholder="https://example.com/api/v1/" contenteditable="true">
-
-            </div> -->
-            <!-- <input v-model="route" class="route-input full-width" placeholder="https://example.com/api/v1/" /> -->
           </div>
         </div>
 
@@ -59,7 +55,9 @@
               <span class="text-weight-light text-h5 text-blue-grey-3">Body</span>
             </div>
             <div class="col-12 q-pa-sm">
-              <input class="full-width" type="textarea" />
+              <JSONEditor v-model="body" class="bg-blue-grey-10">
+
+              </JSONEditor>
             </div>
           </div>
         </div>
@@ -96,6 +94,9 @@
     outline: none;
     box-shadow: none;
     background-color: $blue-grey-8;
+  }
+  &::placeholder {
+    color: $blue-grey-5;
   }
   
 }
@@ -149,8 +150,13 @@ import { ref, computed } from 'vue'
 import ProjectCard from 'components/Project/ProjectCard.vue';
 import ProtocolSelector from 'components/Inputs/ProtocolSelector.vue';
 import RouteInput from 'components/Inputs/RouteInput.vue';
+import JSONEditor from 'src/components/Inputs/JSONEditor.vue';
+
+// import HighlightJS from 'highlight.js'
+// import CodeEditor from "simple-code-editor";
 
 const route = ref('')
+const body = ref('')
 
 interface Header {
   id: string;
