@@ -1,7 +1,7 @@
 <template>
   <div class="row editor-container">
     <div class="col-12">
-      <div class="editor" contenteditable @input="onInput" @keydown="handleKeys" @blur="saveLines">
+      <div class="editor" contenteditable @input="onInput" @keydown="onKeydown" @blur="saveLines">
         {{ lines }}
       </div>
     </div>
@@ -146,6 +146,8 @@
 <script setup lang="ts">
 import { ref, computed, nextTick } from 'vue'
 
+import { handleInput, handleKeyDown } from './JSONEditor/handleKeys'
+
 // const lines = ref<string[]>([
 //   // '{',
 //   // '  "name": "test"',
@@ -170,11 +172,23 @@ const jsonOutput = computed(() => {
   }
 })
 
-const onInput = (e) => {
-  console.log(e)
+const onInput = (e: Event) => {
+  handleInput(e, e.target)
+  const content = e.target.innerHTML || ''
+  json.value = content
+}
+const onKeydown = (e: KeyboardEvent) => {
+  handleKeyDown(e, e.target)
+  const content = e.target.innerHTML || ''
+  json.value = content
 }
 
-const handleKeys = (e: KeyboardEvent) => {
+const handleKeys = (e: Event) => {
+  console.log('handleKeys')
+  console.log(e)
+  // return
+  e.key = e.data
+
   // Get current caret position
   function cursor_position() {
     var sel = document.getSelection();
@@ -211,32 +225,32 @@ const handleKeys = (e: KeyboardEvent) => {
 
   // Autocomplete [] and {} and ()
   if (e.key === '(') {
-    addKeys('()', 1)
+    addKeys(')', 0)
   }
 
   if (e.key === '{') {
-    addKeys('{}', 1)
+    addKeys('}', 0)
   }
 
   if (e.key === '[') {
-    addKeys('[]', 1)
+    addKeys(']', 0)
   }
   
   // Handle quotes
   if (e.key === '"') {
-    addKeys('""', 1)
+    addKeys('"', 0)
   }
 
   if (e.key === "'") {
-    addKeys("''", 1)
+    addKeys("'", 0)
   }
 
   if (e.key === '`') {
-    addKeys('``', 1)
+    addKeys('`', 0)
   }
   
   // On Enter get the correct indentation - This is broken. On an empty lines, it will lose an indentation on every subsequent empty line
-  if (e.key === 'Enter') {
+  if (e.inputType == 'insertParagraph') {
     const pos = cursor_position();
     const selection = window.getSelection();
     const range = selection.getRangeAt(0);
@@ -314,10 +328,10 @@ const handleKeys = (e: KeyboardEvent) => {
     addedKey = true
   }
 
-  if (!addedKey) {
-    e.preventDefault()
-    addKeys(e.key)
-  }
+  // if (!addedKey && e.key) {
+  //   e.preventDefault()
+  //   addKeys(e.key)
+  // }
 
   const position = cursor_position()
 
