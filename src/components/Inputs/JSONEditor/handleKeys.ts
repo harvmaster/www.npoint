@@ -3,6 +3,7 @@ export const handleKeyDown = (e: KeyboardEvent, target: HTMLElement) => {
     append(e, '  ', -1, target)
   }
   if (e.key === 'Enter') {
+    console.log('handle Enter')
     handleEnter(e, target)
   }
 }
@@ -69,19 +70,25 @@ const cursor_position = () => {
 
 // Keep previous indentation
 export const handleEnter = (e: KeyboardEvent, target: HTMLElement) => {
+  e.preventDefault();
+
   const pos = cursor_position();
   const selection = window.getSelection();
   if (!selection) return
+  console.log('pos', pos, 'selection', selection)
 
   const range = selection.getRangeAt(0);
 
   // Get the text content of the line before the cursor
   const content = range.startContainer.textContent;
   if (!content) return
+  console.log('content', content)
+  console.log(content.replaceAll('\n', '\\n'))
 
   const lineStartPos = content.lastIndexOf('\n', pos - 1) + 1;
   const lineBeforeCursor = content.substring(lineStartPos, pos);
   if (!lineBeforeCursor) return
+  console.log('lineBeforeCursor', lineBeforeCursor)
 
   // Get the indentation of the current line, considering empty but indented lines
   let indentation = lineBeforeCursor.match(/^\s*/)?.[0];
@@ -109,7 +116,6 @@ export const handleEnter = (e: KeyboardEvent, target: HTMLElement) => {
   selection.removeAllRanges();
   selection.addRange(range);
 
-  e.preventDefault();
 }
 
 export const isUnescaped = (char: string, target: HTMLElement) => {

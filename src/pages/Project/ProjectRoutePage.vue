@@ -52,15 +52,24 @@
           </div>
 
           <!-- Body -->
-          <div class="col-12 q-pa-sm">
+          <div class="col-12 q-pa-sm" v-if="protocol == 'POST' || protocol == 'PUT'">
             <div class="col-12 q-pl-sm">
               <span class="text-weight-light text-h5 text-blue-grey-3">Body</span>
             </div>
             <div class="col-12 q-pa-sm">
-              <!-- <q-skeleton v-show="protocolLoading" type="rect" animation="wave" class="q-mb-sm" width="10em" height="8em"/> -->
               <JSONEditor v-model="body" class="bg-blue-grey-10">
 
               </JSONEditor>
+            </div>
+          </div>
+
+          <!-- Query -->
+          <div class="col-12 q-pa-sm" v-else-if="protocol == 'DELETE' || protocol == 'GET'">
+            <div class="col-12 q-pl-sm">
+              <span class="text-weight-light text-h5 text-blue-grey-3">Query</span>
+            </div>
+
+            <div class="col-12 q-pa-sm">
             </div>
           </div>
         </div>
@@ -153,7 +162,7 @@ import { ref, computed } from 'vue'
 import ProjectCard from 'components/Project/ProjectCard.vue';
 import ProtocolSelector from 'components/Inputs/ProtocolSelector.vue';
 import RouteInput from 'components/Inputs/RouteInput.vue';
-import JSONEditor from 'src/components/Inputs/JSONEditor.vue';
+import JSONEditor from 'src/components/Inputs/JsonEditor/JsonEditor.vue';
 
 // import HighlightJS from 'highlight.js'
 // import CodeEditor from "simple-code-editor";
@@ -172,7 +181,7 @@ const updateProtocol = (p : string) => {
 }
 
 const route = ref('')
-const body = ref('')
+const body = ref('{\n  "name": "test"\n  "age": 20\n}')
 
 interface Header {
   id: string;

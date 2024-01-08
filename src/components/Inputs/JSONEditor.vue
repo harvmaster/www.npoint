@@ -153,12 +153,12 @@
 </style>
 
 <script setup lang="ts">
-import { ref, computed, nextTick } from 'vue'
+import { ref, computed, defineModel } from 'vue'
 
 import { handleInput, handleKeyDown } from './JSONEditor/handleKeys'
 
-const lines = ref<string>('{\n  "name": "test"\n  "age": 20\n}')
-const json = ref('')
+const json = defineModel<string>({ default: '' })
+const lines = ref<string>()
 
 const jsonOutput = computed(() => {
   try {
