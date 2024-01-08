@@ -1,7 +1,7 @@
 <template>
   <div class="full-height row cursor-pointer" :style="selectorStyle">
     <span class="col-12 self-center text-weight-bolder col-12 text-h6 relative-position scale-hover">
-      {{ protocol.value }}
+      {{ model }}
       <q-menu
         fit
       >
@@ -47,7 +47,7 @@
 </style>
 
 <script setup lang="ts">
-import { ref, computed, StyleValue } from 'vue'
+import { ref, computed, defineModel } from 'vue'
 
 interface ProtocolOption {
   label: string;
@@ -64,19 +64,21 @@ const protocolOptions: ProtocolOption[] = [
   { label: 'DELETE', value: 'DELETE', colors: { text: '#F6C4C2', background: '#EE7D76' }},
 ]
 
-const protocol = ref<ProtocolOption>(protocolOptions[0])
+const model = defineModel<string>({ default: 'GET' })
 
 const selectProtocol = (selected: ProtocolOption) => {
-  protocol.value = selected;
+  model.value = selected.value;
 }
 
 const selectorStyle = computed(() => {
+  const selected = protocolOptions.find(option => option.value === model.value) || protocolOptions[0]
   return {
-    backgroundColor: protocol.value.colors.background,
-    color: protocol.value.colors.text,
+    backgroundColor: selected.colors.background,
+    color: selected.colors.text,
     borderRadius: '0.5em',
     width: '8rem',
-    textAlign: 'center'
+    textAlign: 'center',
+    transition: 'all 0.4s ease-in-out',
   }
 })
 

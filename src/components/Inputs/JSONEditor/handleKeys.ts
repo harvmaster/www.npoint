@@ -18,13 +18,19 @@ export const handleInput = (e: Event, target: HTMLElement) => {
     append(e, ')', 0, target)
   }
   if (e.data === '"') {
-    append(e, '"', 0, target)
+    if (isUnescaped('"', target)) {
+      append(e, '"', 0, target)
+    }
   }
   if (e.data === "'") {
-    append(e, "'", 0, target)
+    if (!isUnescaped("'", target)) {
+      append(e, "'", 0, target)
+    }
   }
   if (e.data === '`') {
-    append(e, '`', 0, target)
+    if (!isUnescaped('`', target)) {
+      append(e, '`', 0, target)
+    }
   }
 
 
@@ -104,4 +110,30 @@ export const handleEnter = (e: KeyboardEvent, target: HTMLElement) => {
   selection.addRange(range);
 
   e.preventDefault();
+}
+
+export const isUnescaped = (char: string, target: HTMLElement) => {
+  const pos = cursor_position();
+  const selection = window.getSelection();
+  if (!selection) return false
+
+  const range = selection.getRangeAt(0);
+  const content = range.startContainer.textContent;
+  if (!content) return false
+  console.log(content)
+
+  const lineStartPos = content.lastIndexOf('\n', pos - 1) + 1;
+  const lineBeforeCursor = content.substring(lineStartPos, pos);
+  if (!lineBeforeCursor) return false
+
+  console.log(pos)
+  console.log(lineStartPos)
+  console.log(lineBeforeCursor)
+
+  const lineBeforeCursorEscaped = lineBeforeCursor.replace(new RegExp(`\\\\${char}`, 'g'), '');
+  console.log(lineBeforeCursorEscaped)
+  if (lineBeforeCursorEscaped.match(new RegExp(char, 'g'))?.length % 2 === 0) {
+    return true
+  }
+  return false
 }

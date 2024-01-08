@@ -5,10 +5,12 @@
       <div class="col-12 row bg-blue-grey-9 route-section q-pa-sm">
         
         <!-- Protocol and Route -->
-        <div class="col-12 row">
-          <protocol-selector />
+        <div class="col-12 row q-col-gutter-sm q-pl-sm q-pt-sm">
+          <div class="col-12 col-md-auto">
+            <protocol-selector class="col-12 col-md-auto" style="min-height: 3em;" v-model="protocol" @update:modelValue="updateProtocol"/>
+          </div>
 
-          <div class="col q-pl-sm">
+          <div class="col-md col-12">
             <route-input class="full-width" />
           </div>
         </div>
@@ -22,7 +24,7 @@
           <div class="col-12 q-pl-sm">
             <span class="text-weight-light text-h5 text-blue-grey-3">Headers</span>
           </div>
-          <TransitionGroup name="list" class="container">
+          <TransitionGroup name="list">
             <div class="" v-for="header of headers" :key="header.id">
               <div class="row route-section-item">
                 <div class="col-4">
@@ -55,6 +57,7 @@
               <span class="text-weight-light text-h5 text-blue-grey-3">Body</span>
             </div>
             <div class="col-12 q-pa-sm">
+              <!-- <q-skeleton v-show="protocolLoading" type="rect" animation="wave" class="q-mb-sm" width="10em" height="8em"/> -->
               <JSONEditor v-model="body" class="bg-blue-grey-10">
 
               </JSONEditor>
@@ -154,6 +157,19 @@ import JSONEditor from 'src/components/Inputs/JSONEditor.vue';
 
 // import HighlightJS from 'highlight.js'
 // import CodeEditor from "simple-code-editor";
+
+const protocol = ref('GET')
+
+const protocolLoading = ref(false)
+const protocolChangeTimer = ref<NodeJS.Timeout | null>(null)
+
+const updateProtocol = (p : string) => {
+  protocolLoading.value = true
+  if (protocolChangeTimer.value) clearTimeout(protocolChangeTimer.value)
+  protocolChangeTimer.value = setTimeout(() => {
+    protocolLoading.value = false
+  }, 2500)
+}
 
 const route = ref('')
 const body = ref('')
