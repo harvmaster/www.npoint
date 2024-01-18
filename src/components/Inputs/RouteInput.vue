@@ -3,7 +3,7 @@
     <input class="route-input route" v-model="content" type="url" @focus="focusURL" @blur="blurURL" @keyup="onType" @mouseup="onMouseUp" />
     <div class="route-url route" :class="isFocused ? 'focused' : ''" v-html="formattedContent" data-placeholder="https://example.com/api/v1" />
   </div> -->
-  <div ref="routeInput" class="route" contenteditable v-html="content" @blur="onType" @keydown="filterKeys" data-placeholder="https://example.com/api/v1" spellcheck="false" />
+  <div ref="routeInput" class="route" contenteditable v-html="content" @blur="onBlur" @keydown="filterKeys" data-placeholder="https://example.com/api/v1" spellcheck="false" />
 
 </template>
 
@@ -65,13 +65,16 @@
 </style>
 
 <script setup lang="ts"> 
-import { ref, computed } from 'vue'
+import { defineModel, ref } from 'vue'
 
+const route = defineModel<string>({
+  default: () => '',
+})
 const content = ref('')
 const routeInput = ref<HTMLElement | null>(null)
 
 const parameterColor = '#ffeb50'
-const onType = (e: Event) => {
+const onBlur = (e: Event) => {
   const path = e.target.textContent || ''
 
   const formattedContent = formatContent(path)
@@ -86,6 +89,7 @@ const onType = (e: Event) => {
   // Remove html from text
   const plainText = content.value.replace(/<[^>]*>?/gm, '')
   console.log(plainText)
+  route.value = plainText
 }
 
 const filterKeys = (e: KeyboardEvent) => {
@@ -102,10 +106,9 @@ const formatContent = (content: string) => {
     if (path === '') {
       return ''
     }
-    if (path.startsWith(':')) {
+    if (path.startsWith(':') || path.startsWith('<')) {
       return `<div style=\"color: ${parameterColor} !important\">${path}</div>`
     }
-    // return`<div>${path}</div>`
     return`${path}`
   })
 
