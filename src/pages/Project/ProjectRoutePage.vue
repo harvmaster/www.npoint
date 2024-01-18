@@ -31,13 +31,13 @@
                   <input v-model="header.key" class="route-input full-width" placeholder="Key" />
                 </div>
                 <div class="col-auto">
-                  <q-separator vertical class="q-mx-xs" />
+                  <q-separator vertical class="q-px-xs" />
                 </div>
                 <div class="col">
                   <input v-model="header.value" class="route-input full-width" placeholder="Value" />
                 </div>
                 <div class="col-auto self-center">
-                  <q-btn class="q-ma-none" color="blue-grey-3" flat round dense icon="close" @click="() => removeHeader(header.id)" />
+                  <q-btn class="q-ma-xs" color="blue-grey-3" flat round dense icon="close" @click="() => removeHeader(header.id)" />
                 </div>
               </div>
               <q-separator class="q-my-sm"/>
@@ -56,7 +56,7 @@
             <div class="col-12 q-pl-sm">
               <span class="text-weight-light text-h5 text-blue-grey-3">Body</span>
             </div>
-            <div class="col-12 q-pa-sm">
+            <div class="col-12 editor-container">
               <JSONEditor v-model="body" class="bg-blue-grey-10">
 
               </JSONEditor>
@@ -74,10 +74,11 @@
           </div>
         </div>
       </div>
-
+      
     </div>
-
+    
     <div class="col-12 col-md-6">
+      <div class="q-pa-xl bg-blue-grey-8" />
       <q-btn @click="console.log(route)" />
     </div>
   </q-page>
@@ -154,6 +155,11 @@
     transform: translateY(0);
   }
 }
+
+.editor-container {
+  overflow: hidden;
+  border-radius: 1rem;
+}
 </style>
 
 <script setup lang="ts">
@@ -162,7 +168,7 @@ import { ref, computed } from 'vue'
 import ProjectCard from 'components/Project/ProjectCard.vue';
 import ProtocolSelector from 'components/Inputs/ProtocolSelector.vue';
 import RouteInput from 'components/Inputs/RouteInput.vue';
-import JSONEditor from 'src/components/Inputs/JsonEditor/JsonEditor.vue';
+import JSONEditor from 'src/components/Inputs/JSONEditor.vue';
 
 // import HighlightJS from 'highlight.js'
 // import CodeEditor from "simple-code-editor";
@@ -181,7 +187,9 @@ const updateProtocol = (p : string) => {
 }
 
 const route = ref('')
-const body = ref('{\n  "name": "test"\n  "age": 20\n}')
+const body = ref({
+  test: 'test'
+})
 
 interface Header {
   id: string;
