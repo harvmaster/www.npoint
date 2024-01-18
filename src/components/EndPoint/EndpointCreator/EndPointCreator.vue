@@ -40,8 +40,6 @@
       <q-separator class="q-my-md"/>
     </div>
 
-    <!-- <AutocompleteInput :autocomplete-color="'blue-grey-6'" :options="options" :optionCount="true"/> -->
-
 
     <!-- Set Response -->
 
@@ -61,42 +59,9 @@ import RouteInput from 'components/Inputs/RouteInput.vue'
 import Headers from 'components/EndPoint/EndpointCreator/EndPointHeaders.vue'
 import ParamsInput from 'components/EndPoint/EndpointCreator/EndPointParams.vue'
 
-import AutocompleteInput from 'src/components/Inputs/AutocompleteInput.vue'
-
 const protocol = ref('GET')
 const route = ref('')
 const headers = ref([])
 const queryParams = ref([])
-
-const options = ref([
-  'application/json',
-  'application/xml',
-  'application/x-www-form-urlencoded',
-  'multipart/form-data',
-  'text/plain',
-  'text/html',
-  'text/xml',
-  'text/csv',
-  'text/css',
-  'text/javascript',
-  'image/png',
-  'image/jpeg',
-  'image/gif',
-  'image/webp',
-  'image/svg+xml',
-  'audio/mpeg',
-  'audio/ogg',
-  'audio/*',
-  'video/mp4',
-  'video/ogg',
-  'video/*',
-  'application/octet-stream',
-  'application/pdf',
-  'application/zip',
-  'application/x-7z-compressed',
-  'application/x-rar-compressed',
-  'application/x-tar', 
-])
-
 
 </script>
