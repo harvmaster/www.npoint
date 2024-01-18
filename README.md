@@ -1,5 +1,6 @@
 # NPoint (npoint)
 A project documentation tool that can be used to document and test the endpoints of REST APIs.
+Check out current developement build [here](https://www.npoint.mc.hzuccon.com/#)
 
 ## Todo
 - Build out frontend to create and display endpoints
