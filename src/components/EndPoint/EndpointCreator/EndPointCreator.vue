@@ -40,7 +40,7 @@
       <q-separator class="q-my-md"/>
     </div>
 
-    <AutocompleteInput :autocomplete-color="'blue-grey-6'" :options="options" :optionCount="true"/>
+    <!-- <AutocompleteInput :autocomplete-color="'blue-grey-6'" :options="options" :optionCount="true"/> -->
 
 
     <!-- Set Response -->
