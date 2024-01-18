@@ -1,7 +1,7 @@
 <template>
   <div class="full-height row cursor-pointer" :style="selectorStyle">
-    <span class="col-12 self-center text-weight-bolder col-12 text-h6 relative-position scale-hover">
-      {{ model }}
+    <span class="row col-12 justify-center self-center text-weight-bolder col-12 text-h6 relative-position ">
+      <div class="col-auto hover-underline-animation">{{ model }}</div>
       <q-menu
         fit
       >
@@ -16,12 +16,12 @@
 </template>
 
 <style lang="scss" scoped>
-.scale-hover {
-  transition: transform 0.25s ease-out;
-}
-.scale-hover:hover {
-  transform: scale(1.1);
-}
+// .scale-hover {
+//   transition: transform 0.25s ease-out;
+// }
+// .scale-hover:hover {
+//   transform: scale(1.1);
+// }
 .hover-underline-animation {
   display: inline-block;
   position: relative;
@@ -31,17 +31,17 @@
   content: '';
   position: absolute;
   width: 100%;
-  transform: scaleX(0);
-  height: 2px;
+  transform: scaleX(0) translateY(-150%);
+  height: 0.15em;
   bottom: 0;
   left: 0;
   background-color: v-bind('selectorStyle?.color');
   transform-origin: bottom right;
-  transition: transform 0.25s ease-out;
+  transition: transform 0.15s ease-out;
 }
 
 .hover-underline-animation:hover::after {
-  transform: scaleX(1);
+  transform: scaleX(1) translateY(-150%);
   transform-origin: bottom left;
 }
 </style>
