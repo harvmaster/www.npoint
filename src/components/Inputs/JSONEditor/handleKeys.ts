@@ -57,7 +57,7 @@ export const append = (e: Event, str: string, newPosition = -1, target: HTMLElem
   }
 }
 
-const cursor_position = () => {
+export const cursor_position = () => {
   const sel = document.getSelection();
   if (!sel) return 0;
 
@@ -142,4 +142,34 @@ export const isUnescaped = (char: string, target: HTMLElement) => {
     return true
   }
   return false
+}
+
+export const getCaretPosition = (element: HTMLElement) => {
+  let start = 0;
+  let end = 0;
+  const doc = element.ownerDocument
+  if (!doc) return { start: 0, end: 0 }
+  const win = doc.defaultView || doc.parentWindow;
+  let sel;
+  if (typeof win.getSelection != "undefined") {
+      sel = win.getSelection();
+      if (sel.rangeCount > 0) {
+          const range = win.getSelection().getRangeAt(0);
+          const preCaretRange = range.cloneRange();
+          preCaretRange.selectNodeContents(element);
+          preCaretRange.setEnd(range.startContainer, range.startOffset);
+          start = preCaretRange.toString().length;
+          preCaretRange.setEnd(range.endContainer, range.endOffset);
+          end = preCaretRange.toString().length;
+      }
+  } else if ( (sel = doc.selection) && sel.type != "Control") {
+      const textRange = sel.createRange();
+      const preCaretTextRange = doc.body.createTextRange();
+      preCaretTextRange.moveToElementText(element);
+      preCaretTextRange.setEndPoint("EndToStart", textRange);
+      start = preCaretTextRange.text.length;
+      preCaretTextRange.setEndPoint("EndToEnd", textRange);
+      end = preCaretTextRange.text.length;
+  }
+  return { start: start, end: end };
 }
